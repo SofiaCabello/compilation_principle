@@ -1,0 +1,39 @@
+main {
+    integer count;
+    real temperature;
+    char grade;
+    bool isPassed;
+
+    read(count);
+    read(temperature);
+    read(grade);
+
+    if (count > 10) then {
+        write("Count is greater than 10.");
+    } else {
+        write("Count is not greater than 10.");
+    }
+
+    while (count < 100) do {
+        count = count + 1;
+    }
+
+    for i from 1 to 10 step 1 {
+        write(i);
+    }
+
+    switch (grade) of
+        case 'A': write("Excellent");
+        case 'B': write("Good");
+        default: write("Try harder");
+    
+    if (temperature >= 37.5 or isPassed != true) then {
+        write("Stay home or see a doctor.");
+    }
+
+    repeat {
+        count = count - 1;
+    } until (count == 0);
+
+    return;
+}
