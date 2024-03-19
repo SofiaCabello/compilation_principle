@@ -24,13 +24,13 @@ struct Token {
 };
 
 const vector<string> keywords = {
-    "main",
-    "if", "then", "else",
-    "while", "do",
-    "repeat", "until",
-    "for", "from", "to", "step",
-    "switch", "of", "case", "default",
-    "return",
+    "main", // KEYWORD_MAIN
+    "if", "then", "else", // KEYWORD_CONDITIONAL
+    "while", "do", // KEYWORD_LOOP
+    "repeat", "until", // KEYWORD_LOOP
+    "for", "from", "to", "step", // KEYWORD_LOOP
+    "switch", "of", "case", "default", // KEYWORD_CONDITIONAL
+    "return", // 
     "integer", "real", "char", "bool",
     "and", "or", "not", "mod",
     "read", "write"
@@ -42,6 +42,16 @@ const map<string, TokenType> symbols = {
   {",", SYMBOL}, {";", SYMBOL}, {":",SYMBOL}, {"(", SYMBOL}, {")", SYMBOL},
   {"{", SYMBOL}, {"}", SYMBOL}, {"[", SYMBOL}, {"]", SYMBOL}
 };
+
+string TokenTypeToString(TokenType type) {
+  switch(type) {
+    case KEYWORD: return "KEYWORD";
+    case SYMBOL: return "SYMBOL";
+    case IDENTIFIER: return "IDENTIFIER";
+    case NUMBER: return "NUMBER";
+    case UNKNOWN: return "UNKNOWN";
+  }
+}
 
 class Lexer {
 private:
@@ -83,8 +93,6 @@ public:
         break;
       }
 
-      #include <algorithm>
-
       if (isalpha(peek)) {
         string buffer;
         while (true) {
@@ -112,7 +120,6 @@ public:
             break;
           }
         }
-
         tokens.push_back({NUMBER, num});
         continue;
       }
@@ -132,15 +139,15 @@ public:
 };
 
 int main(int argc, char* argv[]){
-  if(argc != 2){
+  if(argc < 2){
     throw runtime_error("[ERROR] Invalid number of arguments. Usage: ./lexer <filename>");
   }
 
   string filename = argv[1];
   Lexer lexer(filename);
   vector<Token> tokens = lexer.tokenize();
-  for(const auto &token : tokens){
-    cout << "Token(Type=" << token.type << ", Value=\"" << token.value << "\")" << endl;
+  for(const Token &token : tokens){
+    cout << "Token(Type=" << TokenTypeToString(token.type) << ", Value=\"" << token.value << "\")" << endl;
   }
   return 0;
 }
